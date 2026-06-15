@@ -1,0 +1,54 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.venv/
+
+# Environment
+.env
+
+# PostgreSQL
+postgres_data/
+
+# Angular
+frontend/node_modules/
+frontend/dist/
+
+# IDE
+.vscode/
+.idea/
+
+# Coverage
+.coverage
+htmlcov/
+
+# Docker
+docker-volumes/
+
+# Angular
+frontend/node_modules
+frontend/.angular
+frontend/dist
+
+# Python
+backend/.venv
+backend/__pycache__
+backend/*.db
+
+# VS Code
+.vscode
+
+# OS
+.DS_Store
+
+# Logs
+*.log
