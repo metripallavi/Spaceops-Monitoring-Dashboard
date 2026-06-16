@@ -1,0 +1,102 @@
+.dashboard {
+  padding: 16px;
+  background: #0d1117;
+  color: #e6edf3;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.live {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #00e676;
+  font-weight: bold;
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background: #00e676;
+  border-radius: 50%;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.card {
+  background: #161b22;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.chart-card {
+  height: 260px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+.chart-wrapper canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+table {
+  width: 100%;
+  margin-top: 16px;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #222;
+}
+
+.offline-row {
+  background: rgba(255, 0, 0, 0.08);
+  animation: offlinePulse 2s infinite;
+}
+
+.cpu-alert {
+  background: rgba(255, 165, 0, 0.08);
+  animation: cpuWarning 1.5s infinite;
+}
+
+@keyframes offlinePulse {
+  0% { box-shadow: 0 0 0 rgba(255,0,0,0); }
+  50% { box-shadow: 0 0 12px rgba(255,0,0,0.4); }
+  100% { box-shadow: 0 0 0 rgba(255,0,0,0); }
+}
+
+@keyframes cpuWarning {
+  0% { background: rgba(255,165,0,0.05); }
+  50% { background: rgba(255,165,0,0.15); }
+  100% { background: rgba(255,165,0,0.05); }
+}

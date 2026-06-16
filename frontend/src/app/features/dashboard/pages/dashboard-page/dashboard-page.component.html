@@ -1,3 +1,98 @@
-<h1>SpaceOps Monitoring Dashboard</h1>
+<div class="dashboard">
 
-<p>Total Stations: {{ stations.length }}</p>
+  <div class="header">
+    <h1>SPACEOPS CONTROL CENTER</h1>
+
+    <div class="live-block">
+      <span class="live">
+        <span class="live-dot"></span>
+        LIVE
+      </span>
+      <span class="time">Last update: {{ lastUpdated }}</span>
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div class="card">
+      <h3>Total</h3>
+      <p>{{ metrics.total_stations }}</p>
+    </div>
+
+    <div class="card">
+      <h3>Online</h3>
+      <p>{{ metrics.online_stations }}</p>
+    </div>
+
+    <div class="card">
+      <h3>Offline</h3>
+      <p>{{ metrics.offline_stations }}</p>
+    </div>
+  </div>
+
+  <div class="charts">
+
+    <div class="card chart-card">
+      <h3>CPU Usage</h3>
+      <div class="chart-wrapper">
+        <canvas id="cpuChart"></canvas>
+      </div>
+    </div>
+
+    <div class="card chart-card">
+      <h3>Memory Usage</h3>
+      <div class="chart-wrapper">
+        <canvas id="memoryChart"></canvas>
+      </div>
+    </div>
+
+    <div class="card chart-card">
+      <h3>Signal Strength</h3>
+      <div class="chart-wrapper">
+        <canvas id="signalChart"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="table-container">
+
+    <h2>Ground Stations</h2>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>Station</th>
+          <th>Status</th>
+          <th>CPU</th>
+          <th>Memory</th>
+          <th>Signal</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr
+          *ngFor="let s of stations"
+          (click)="goToStation(s.id)"
+          [ngClass]="{
+            'offline-row': s.status === 'OFFLINE',
+            'cpu-alert': s.cpu_usage > 85
+          }"
+        >
+          <td>{{ s.station_name }}</td>
+          <td>
+            <span [class.online]="s.status==='ONLINE'" [class.offline]="s.status==='OFFLINE'">
+              {{ s.status }}
+            </span>
+          </td>
+          <td>{{ s.cpu_usage }}%</td>
+          <td>{{ s.memory_usage }}%</td>
+          <td>{{ s.signal_strength }}%</td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
