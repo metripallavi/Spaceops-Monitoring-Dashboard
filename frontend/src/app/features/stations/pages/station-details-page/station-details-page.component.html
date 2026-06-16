@@ -1,0 +1,31 @@
+<div class="station-details-container">
+
+  <div *ngIf="loading">
+    Loading station details...
+  </div>
+
+  <div *ngIf="error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="station && !loading">
+
+    <h1>{{ station.station_name }}</h1>
+
+    <p><b>Status:</b> {{ station.status }}</p>
+
+    <div class="grid">
+      <div>CPU: {{ station.cpu_usage }}%</div>
+      <div>Memory: {{ station.memory_usage }}%</div>
+      <div>Signal: {{ station.signal_strength }}%</div>
+      <div>Connections: {{ station.active_connections }}</div>
+    </div>
+
+    <p>
+      Last Update:
+      {{ station.last_telemetry_timestamp | date:'medium' }}
+    </p>
+
+  </div>
+
+</div>
