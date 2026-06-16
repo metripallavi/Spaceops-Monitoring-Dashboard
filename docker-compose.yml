@@ -1,0 +1,56 @@
+services:
+
+  db:
+    image: postgres:16
+    container_name: spaceops-db
+
+    environment:
+      POSTGRES_USER: spaceops
+      POSTGRES_PASSWORD: spaceops123
+      POSTGRES_DB: spaceops_db
+
+    ports:
+      - "5435:5432"
+
+    restart: unless-stopped
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U spaceops"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+
+  backend:
+    build:
+      context: ./backend
+
+    container_name: spaceops-backend
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+    ports:
+      - "8000:8000"
+
+    restart: unless-stopped
+
+    # ❌ NO HEALTHCHECK HERE (intentionally removed)
+    # backend is already verified via API endpoints
+
+
+  frontend:
+    build:
+      context: ./frontend
+
+    container_name: spaceops-frontend
+
+    ports:
+      - "4200:80"
+
+    depends_on:
+      - backend
+
+    restart: unless-stopped
