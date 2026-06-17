@@ -24,9 +24,9 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     offline_stations: 0,
   };
 
-  lastUpdated = '';
+  lastUpdated: string = '';
 
-  private charts: any = {};
+  private charts: Record<string, any> = {};
   private sub: any;
 
   constructor(
@@ -36,16 +36,27 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.apiService.getStations().subscribe(data => {
-      this.update(data);
+    console.log('🚀 Dashboard Init started');
+
+    this.apiService.getStations().subscribe({
+      next: (data: any[]) => {
+        console.log('📡 API stations received:', data);
+        this.update(data);
+      },
+      error: (err) => {
+        console.error('❌ API error:', err);
+      }
     });
 
-    this.sub = this.ws.connect().subscribe(data => {
-      this.update(data);
+    this.sub = this.ws.connect().subscribe({
+      next: (data: any[]) => {
+        console.log('📡 WS data:', data);
+        this.update(data);
+      }
     });
   }
 
-  update(data: any[]) {
+  update(data: any[]): void {
     this.stations = data;
 
     this.lastUpdated = new Date().toLocaleTimeString();
@@ -57,11 +68,11 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     this.renderCharts(data);
   }
 
-  goToStation(id: number) {
+  goToStation(id: number): void {
     this.router.navigate(['/stations', id]);
   }
 
-  renderCharts(data: any[]) {
+  renderCharts(data: any[]): void {
     const labels = data.map(s => s.station_name);
 
     this.draw('cpuChart', labels, data.map(s => s.cpu_usage), 'CPU %');
@@ -69,7 +80,7 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     this.draw('signalChart', labels, data.map(s => s.signal_strength), 'Signal %');
   }
 
-  draw(id: string, labels: string[], values: number[], label: string) {
+  draw(id: string, labels: string[], values: number[], label: string): void {
 
     const canvas = document.getElementById(id) as HTMLCanvasElement;
     if (!canvas) return;
@@ -127,8 +138,8 @@ export class DashboardPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.ws.close();
+  ngOnDestroy(): void {
+    this.ws?.close();
     this.sub?.unsubscribe();
   }
 }

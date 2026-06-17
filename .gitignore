@@ -52,3 +52,5 @@ backend/*.db
 
 # Logs
 *.log
+# local binaries
+k8s/minikube-linux-amd64
