@@ -12,9 +12,11 @@ spec:
       labels:
         app: frontend
     spec:
+      imagePullSecrets:
+        - name: ghcr-secret
       containers:
         - name: frontend
-          image: spaceops-monitoring-dashboard-frontend:latest
-          imagePullPolicy: Never
+          image: ghcr.io/metripallavi/spaceops-monitoring-dashboard/frontend:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 80

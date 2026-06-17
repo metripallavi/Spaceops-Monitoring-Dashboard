@@ -174,6 +174,6 @@ jobs:
 
       - name: Wait for rollout
         run: |
-          kubectl rollout status deployment/postgres --timeout=120s
-          kubectl rollout status deployment/backend --timeout=120s
-          kubectl rollout status deployment/frontend --timeout=120s
+          kubectl rollout status deployment/postgres --timeout=300s
+          kubectl rollout status deployment/backend --timeout=300s
+          kubectl rollout status deployment/frontend --timeout=300s
