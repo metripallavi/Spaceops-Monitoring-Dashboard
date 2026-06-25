@@ -125,7 +125,7 @@ jobs:
 
   deploy-to-k8s:
     name: Deploy to Kubernetes
-    runs-on: self-hosted
+    runs-on: [self-hosted, Linux, X64]
     needs:
       - docker-backend
       - docker-frontend
@@ -133,6 +133,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Start Minikube
+        run: |
+          minikube status || minikube start --driver=docker
 
       - name: Verify cluster access
         run: kubectl get nodes
