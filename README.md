@@ -355,7 +355,6 @@ Software Developer
 * Repository: https://github.com/metripallavi/Spaceops-Monitoring-Dashboard
 
 
- 
 GitHub Repository:
 
 `spaceops-monitoring-dashboard`

@@ -1,0 +1,39 @@
+backend:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/metripallavi/spaceops-monitoring-dashboard/backend
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8000
+  env:
+    DATABASE_URL: postgresql+psycopg2://spaceops_user:spaceops_pass@postgres-service:5432/spaceops
+    APP_NAME: SPACEOPS Monitoring Dashboard
+    API_V1_PREFIX: /api/v1
+    DEBUG: "True"
+
+frontend:
+  replicaCount: 1
+  image:
+    repository: ghcr.io/metripallavi/spaceops-monitoring-dashboard/frontend
+    tag: latest
+    pullPolicy: IfNotPresent
+  service:
+    type: NodePort
+    port: 80
+    nodePort: 30080
+
+postgres:
+  replicaCount: 1
+  image:
+    repository: postgres
+    tag: "15"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 5432
+  env:
+    POSTGRES_DB: spaceops
+    POSTGRES_USER: spaceops_user
+    POSTGRES_PASSWORD: spaceops_pass
