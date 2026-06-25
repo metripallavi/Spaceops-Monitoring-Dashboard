@@ -137,14 +137,25 @@ jobs:
       - name: Verify cluster access
         run: kubectl get nodes
 
-      - name: Check Helm
-        run: helm version
-
-      - name: Lint Helm chart
-        run: helm lint ./helm/spaceops
-
-      - name: Deploy with Helm
+      - name: Apply manifests
         run: |
-          helm upgrade --install spaceops ./helm/spaceops \
-            --set backend.image.repository=ghcr.io/metripallavi/spaceops-monitoring-dashboard/backend \
-            --set backend.image.tag=${{ needs.docker-backend.outputs.image_tag }} 
+          kubectl apply -f k8s/postgres-deployment.yaml
+          kubectl apply -f k8s/postgres-service.yaml
+          kubectl apply -f k8s/backend-deployment.yaml
+          kubectl apply -f k8s/backend-service.yaml
+          kubectl apply -f k8s/frontend-deployment.yaml
+          kubectl apply -f k8s/frontend-service.yaml
+
+      - name: Update backend image
+        run: |
+          kubectl set image deployment/backend backend=ghcr.io/metripallavi/spaceops-monitoring-dashboard/backend:${{ needs.docker-backend.outputs.image_tag }}
+
+      - name: Update frontend image
+        run: |
+          kubectl set image deployment/frontend frontend=ghcr.io/metripallavi/spaceops-monitoring-dashboard/frontend:${{ needs.docker-frontend.outputs.image_tag }}
+
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/postgres --timeout=300s
+          kubectl rollout status deployment/backend --timeout=300s
+          kubectl rollout status deployment/frontend --timeout=300s
